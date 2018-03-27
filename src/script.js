@@ -1,7 +1,20 @@
-import React from 'react';
-const repng = require('repng')
+require('babel-register')({
+  plugins: [
+    'babel-plugin-transform-async-to-generator',
+    'babel-plugin-transform-runtime'
+  ].map(require.resolve),
+  presets: [
+    'babel-preset-env',
+    'babel-preset-stage-0',
+    'babel-preset-react'
+  ].map(require.resolve)
+})
 
-const Component = ({char, fontFamily}) => (<span style={{ fontSize: 1000, background: 'white', fontFamily }}>{char}</span>)
+const React = require('react')
+const repng = require('repng')
+const Component = require('./Component').default
+
+
 
 const char = `ก	ข	ฃ	ค	ฅ	ฆ	ง	จ	ฉ	ช	ซ	ฌ	ญ	ฎ	ฏ	ฐ	ฑ	ฒ	ณ	ด	ต	ถ	ท	ธ	น	บ	ป	ผ	ฝ	พ	ฟ	ภ	ม	ย	ร	ล	ว	ศ	ษ	ส	ห	ฬ	อ	ฮ`
 const charList = [
@@ -12,7 +25,8 @@ const charList = [
   'ห', 'ฬ', 'อ', 'ฮ',
 ]
 const fontList = [
-  'superstore',
+  // 'superstore',
+  'csprajad',
 ]
 /*
   ----------------------------------------------------------------------------------------------------------------
@@ -37,8 +51,8 @@ const fontList = [
   ` 
 */
 
-it('renders without crashing', async () => {
-
+const generator = async () => {
+  console.time()
   for (let fontFamily of fontList) {
     for (let char of charList) {
       const options = {
@@ -46,12 +60,11 @@ it('renders without crashing', async () => {
         outDir: `./image/${fontFamily}`,
         filename: `font_${fontFamily}_char_${char}`,
       }
-    
       const result = await repng(Component, options)
-      
-      await result.then(streams => {
-        console.log(`font_${fontFamily}_char_${char}`)
-      })
+      console.log(`font_${fontFamily}_char_${char}`)
     }
   }
-});
+  console.timeEnd()
+}
+
+generator()
