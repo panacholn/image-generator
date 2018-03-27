@@ -1,9 +1,20 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import App from './App';
+const repng = require('repng')
+
+const Component = ({char}) => (<span style={{ fontSize: 300, background: 'white' }}>{char}</span>)
 
 it('renders without crashing', () => {
-  const div = document.createElement('div');
-  ReactDOM.render(<App />, div);
-  ReactDOM.unmountComponentAtNode(div);
+  const options = {
+    props: {
+      char: 'ก',
+    },
+    outDir: './image',
+    filename: 'testImage',
+  }
+
+  const result = repng(Component, options)
+  
+  result.then(streams => {
+    console.log('rendered component')
+  })
 });
