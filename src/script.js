@@ -25,9 +25,35 @@ const charList = [
   'ห', 'ฬ', 'อ', 'ฮ',
 ]
 const fontList = [
-  // 'superstore',
+  'superstore',
   'csprajad',
+  'sathu',
+  'silom',
+  'krungthep',
+  'thonburi',
 ]
+
+const generator = () => {
+  console.time()
+  for (let fontFamily of fontList) {
+    for (let char of charList) {
+      const options = {
+        props: { char, fontFamily },
+        outDir: `./image/${fontFamily}`,
+        filename: `font_${fontFamily}_char_${char}`,
+      }
+      repng(Component, options)
+    }
+  }
+  console.timeEnd()
+}
+
+const fn = async () => {
+  await generator()
+}
+
+fn()
+
 /*
   ----------------------------------------------------------------------------------------------------------------
     Before run test change index.js of repng libs
@@ -44,27 +70,20 @@ const fontList = [
           <meta http-equiv="X-UA-Compatible" content="ie=edge">
           <title>Document</title>
       </head>
-      <body>
+      <body style="padding-top: 200px;">
         ${markup}
       </body>
     </html>
   ` 
+
+  // comment =>  crop: true
+  const opts = Object.assign({
+    width: 1024,
+    height: 768,
+    // crop: true,
+    scale: 1,
+  }, _options, {
+    css: defaultCss + css,
+    filename: filename || defaultFilename
+  })
 */
-
-const generator = async () => {
-  console.time()
-  for (let fontFamily of fontList) {
-    for (let char of charList) {
-      const options = {
-        props: { char, fontFamily },
-        outDir: `./image/${fontFamily}`,
-        filename: `font_${fontFamily}_char_${char}`,
-      }
-      const result = await repng(Component, options)
-      console.log(`font_${fontFamily}_char_${char}`)
-    }
-  }
-  console.timeEnd()
-}
-
-generator()
